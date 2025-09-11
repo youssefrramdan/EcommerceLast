@@ -4,7 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import compression from 'compression';
-import rateLimit from 'express-rate-limit';
+// import rateLimit from 'express-rate-limit';
 import globalError from './middlewares/errorMiddleware.js';
 import ApiError from './utils/apiError.js';
 import bootstrap from './bootstrap.js';
@@ -20,21 +20,7 @@ const app = express();
 // Trust proxy - Required for Heroku deployment
 app.set('trust proxy', 1);
 
-// Rate limiting - More generous limits for development
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Increased from 100 to 1000 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  // Skip rate limiting for development
-  skip: req => {
-    return process.env.NODE_ENV === 'development';
-  },
-});
-
-// Apply rate limiting to all routes
-app.use('/api/', limiter);
+// Rate limiting disabled - removed to prevent server crashes from too many requests
 
 const corsOptions = {
   origin: [
